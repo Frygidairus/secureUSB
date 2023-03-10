@@ -1,6 +1,5 @@
-import python.scripts.cryp as cryp
+import cryp
 from pathlib import Path
-
 
 '''
    with open('dirEnc/toBeEnc.txt', 'rt') as reader:
@@ -11,33 +10,49 @@ from pathlib import Path
       print(reader.read())
 '''
 
+
 def get_all_file_names():
-   theFiles = []
-   for file in Path('dirEnc').iterdir():
-      theFiles.append(file)
-   return theFiles
+    theFiles = []
+    for file in Path('dirEnc').iterdir():
+        theFiles.append(file)
+    return theFiles
 
 
 
 if __name__ == '__main__':
 
-   print('Hello! What do you want to do?\n')
-   print('a) encrypt\n')
-   print('b) decrypt\n')
-   choice = input('c) nothing\n')
+    print('Hello! What do you want to do?\n')
+    print('a) encrypt\n')
+    print('b) decrypt\n')
+    choice = input('c) nothing\n')
 
-   if choice == 'a':
-      key = cryp.create_and_store_key()
-      theFiles = get_all_file_names()
-      for file in theFiles:
-         cryp.encrypt_file(key, file)
+    if choice == 'a':
+        pwd = bytes(input('Please enter your password: '),'utf-8')
+        ukey = cryp.derive_key(pwd)
 
-   elif choice == 'b':
-      with open('myKey.txt', 'rb') as reader:
-         key = reader.read()
-      theFiles = get_all_file_names()
-      for file in theFiles:
-         cryp.decrypt_file(key, file)
+        if cryp.check_key(ukey):
+            theFiles = get_all_file_names()
+            for file in theFiles:
+                cryp.encrypt_file(ukey, file)
+            print('Your files are now encrypted!')
+        else:
+            print('Wrong password.')
 
-   else:
-      print('ByeBye!')
+    elif choice == 'b':
+        pwd = bytes(input('Please enter your password: '), 'utf-8')
+        ukey = cryp.derive_key(pwd)
+
+        if cryp.check_key(ukey):
+            theFiles = get_all_file_names()
+            for file in theFiles:
+                cryp.decrypt_file(ukey, file)
+            print('Your files are now decrypted!')
+        else:
+            print('Wrong password.')
+
+    elif choice == 'ini':
+        pwd = bytes(input('what is the password to initialize?'),'utf-8')
+        cryp.create_and_store_key(pwd)
+
+    else:
+        print('ByeBye!')
