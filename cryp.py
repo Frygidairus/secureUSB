@@ -18,7 +18,7 @@ kdf = PBKDF2HMAC(
 # From a password, derive a key and store a a hash of it in the myKey.txt file (used during the initialization)
 def create_and_store_key(pwd):
     key = base64.urlsafe_b64encode(kdf.derive(pwd))
-    print(key)
+    # print(key)
     with open('myKey.txt', 'wb') as file:
         file.write(hashlib.sha256(key).digest())
 
