@@ -10,7 +10,7 @@ from pathlib import Path
       print(reader.read())
 '''
 
-
+# Retrieve all the file names within the dirEnc folder
 def get_all_file_names():
     theFiles = []
     for file in Path('dirEnc').iterdir():
@@ -22,7 +22,9 @@ def get_all_file_names():
 if __name__ == '__main__':
 
     print('Hello! What do you want to do?\n')
+    # Uses the password entered by the user to encrypt data within the dirEnc folder after checking the password is the right one 
     print('a) encrypt\n')
+    # Uses the password entered by the user to decrypt data within the dirEnc folder after checking the password is the right one
     print('b) decrypt\n')
     choice = input('c) nothing\n')
 
@@ -49,7 +51,7 @@ if __name__ == '__main__':
             print('Your files are now decrypted!')
         else:
             print('Wrong password.')
-
+    # Set up the password
     elif choice == 'ini':
         pwd = bytes(input('what is the password to initialize?'),'utf-8')
         cryp.create_and_store_key(pwd)
